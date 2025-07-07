@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
-import { FaGithub, FiExternalLink } from "react-icons/fa"
+import { FaGithub } from "react-icons/fa"
+import { FiExternalLink } from "react-icons/fi"
 import { useTilt3D } from "../utils/useTilt3D"
 import { fadeUp } from "../utils/motion"
 import { ProjectModal } from "../components/ProjectModal"
