@@ -12,6 +12,10 @@ import { FloatingChatbot } from "./components/FloatingChatbot"
 import { ScrollProgress } from "./components/ScrollProgress"
 import { ParticleBackground } from "./components/ParticleBackground"
 import { CursorFollower } from "./components/CursorFollower"
+import { FloatingElements } from "./components/FloatingElements"
+import { InteractiveGrid } from "./components/InteractiveGrid"
+import { NeuralNetwork } from "./components/NeuralNetwork"
+import { CodeRain } from "./components/CodeRain"
 import { useSmoothScroll } from "./utils/useSmoothScroll"
 
 function App() {
@@ -29,9 +33,18 @@ function App() {
       {loading && <Preloader />}
       {!loading && (
         <div className="bg-gradient-to-br from-black via-gray-900 to-black min-h-screen text-white font-sans scroll-smooth dark relative overflow-x-hidden">
+          {/* Background Effects */}
+          <CodeRain />
           <ParticleBackground />
+          <InteractiveGrid />
+          <NeuralNetwork />
+          <FloatingElements />
+          
+          {/* Interactive Elements */}
           <CursorFollower />
           <ScrollProgress />
+          
+          {/* Main Content */}
           <Navbar />
           <Hero />
           <Education />

@@ -1,12 +1,12 @@
 import { motion } from "framer-motion"
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa"
 import { Typewriter } from "react-simple-typewriter"
-import Blob from "../components/Blob"
 import { fadeUp } from "../utils/motion"
 import MagneticButton from "../components/MagneticButton"
 import { AnimatedText } from "../components/AnimatedText"
 import { GlitchText } from "../components/GlitchText"
 import { TextReveal } from "../components/TextReveal"
+import { MorphingShape } from "../components/MorphingShape"
 
 export const Hero = () => {
   return (
@@ -14,71 +14,9 @@ export const Hero = () => {
       id="home"
       className="min-h-screen flex flex-col justify-center items-center text-center px-4 pt-20 overflow-hidden relative"
     >
-      <Blob />
+      <MorphingShape />
 
       <div className="w-full max-w-screen-lg mx-auto flex flex-col items-center relative z-10">
-        {/* Floating Elements */}
-        <motion.div
-          className="absolute -top-20 -left-20 w-32 h-32 bg-pink-500/10 rounded-full blur-xl"
-          animate={{
-            x: [0, 30, 0],
-            y: [0, -30, 0],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute -top-10 -right-20 w-24 h-24 bg-purple-500/10 rounded-full blur-xl"
-          animate={{
-            x: [0, -20, 0],
-            y: [0, 20, 0],
-            scale: [1, 0.8, 1],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-
-        {/* Matrix-style code rain effect */}
-        <motion.div
-          className="absolute inset-0 pointer-events-none opacity-5"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.05 }}
-          transition={{ duration: 2 }}
-        >
-          {Array.from({ length: 20 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute text-green-400 font-mono text-xs"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `-10%`,
-              }}
-              animate={{
-                y: ["0vh", "110vh"],
-              }}
-              transition={{
-                duration: Math.random() * 3 + 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-                ease: "linear"
-              }}
-            >
-              {Array.from({ length: 10 }).map((_, j) => (
-                <div key={j}>
-                  {Math.random() > 0.5 ? '1' : '0'}
-                </div>
-              ))}
-            </motion.div>
-          ))}
-        </motion.div>
-
         {/* Enhanced Terminal Intro Box */}
         <motion.div
           variants={fadeUp}
@@ -189,7 +127,7 @@ export const Hero = () => {
           </motion.h1>
         </motion.div>
 
-        {/* Enhanced Subtitle with Morphing Effect */}
+        {/* Enhanced Subtitle */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -204,7 +142,7 @@ export const Hero = () => {
           </TextReveal>
         </motion.div>
 
-        {/* Enhanced Resume Button with Ripple Effect */}
+        {/* Enhanced Resume Button */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -239,16 +177,10 @@ export const Hero = () => {
               📄
             </motion.span>
             Download Resume
-            <motion.div
-              className="absolute inset-0 bg-white/20 rounded-md"
-              initial={{ scale: 0, opacity: 0 }}
-              whileHover={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.3 }}
-            />
           </MagneticButton>
         </motion.div>
 
-        {/* Enhanced Social Icons with Orbital Animation */}
+        {/* Enhanced Social Icons */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
