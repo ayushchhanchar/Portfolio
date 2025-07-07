@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
+import { useRef } from "react"
 import { motion } from "framer-motion"
 
 interface Particle {
@@ -15,7 +16,8 @@ export const ParticleBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const particlesRef = useRef<Particle[]>([])
   const mouseRef = useRef({ x: 0, y: 0 })
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | null>(null)
+
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -114,6 +116,7 @@ export const ParticleBackground = () => {
     resizeCanvas()
     createParticles()
     animationRef.current = requestAnimationFrame(animate)
+
 
     window.addEventListener('resize', () => {
       resizeCanvas()
