@@ -113,7 +113,7 @@ export const ParticleBackground = () => {
 
     resizeCanvas()
     createParticles()
-    animate(0)
+    animationRef.current = requestAnimationFrame(animate)
 
     window.addEventListener('resize', () => {
       resizeCanvas()
