@@ -7,15 +7,24 @@ export const CursorFollower = () => {
   const cursorX = useMotionValue(-100)
   const cursorY = useMotionValue(-100)
   
-  const springConfig = { damping: 25, stiffness: 700 }
+  // Reduced spring stiffness for smoother performance
+  const springConfig = { damping: 30, stiffness: 400 }
   const cursorXSpring = useSpring(cursorX, springConfig)
   const cursorYSpring = useSpring(cursorY, springConfig)
 
   useEffect(() => {
+    let ticking = false
+    
     const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 16)
-      cursorY.set(e.clientY - 16)
-      setIsVisible(true)
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          cursorX.set(e.clientX - 16)
+          cursorY.set(e.clientY - 16)
+          setIsVisible(true)
+          ticking = false
+        })
+        ticking = true
+      }
     }
 
     const handleMouseEnter = () => setIsHovering(true)

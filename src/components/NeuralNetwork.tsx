@@ -13,8 +13,8 @@ export const NeuralNetwork = () => {
   const [activeConnections, setActiveConnections] = useState<Set<string>>(new Set())
 
   useEffect(() => {
-    // Create nodes
-    const nodeCount = 15
+    // Reduced node count for better performance
+    const nodeCount = 8
     const newNodes: Node[] = []
     
     for (let i = 0; i < nodeCount; i++) {
@@ -26,9 +26,9 @@ export const NeuralNetwork = () => {
       })
     }
 
-    // Create connections
+    // Create fewer connections
     newNodes.forEach(node => {
-      const connectionCount = Math.floor(Math.random() * 3) + 1
+      const connectionCount = Math.floor(Math.random() * 2) + 1
       for (let i = 0; i < connectionCount; i++) {
         const targetId = Math.floor(Math.random() * nodeCount)
         if (targetId !== node.id && !node.connections.includes(targetId)) {
@@ -39,7 +39,7 @@ export const NeuralNetwork = () => {
 
     setNodes(newNodes)
 
-    // Animate connections
+    // Slower animation interval
     const interval = setInterval(() => {
       const allConnections: string[] = []
       newNodes.forEach(node => {
@@ -58,16 +58,16 @@ export const NeuralNetwork = () => {
             updated.delete(randomConnection)
             return updated
           })
-        }, 1000)
+        }, 2000)
         return newSet
       })
-    }, 500)
+    }, 1000)
 
     return () => clearInterval(interval)
   }, [])
 
   return (
-    <div className="absolute inset-0 pointer-events-none opacity-20">
+    <div className="absolute inset-0 pointer-events-none opacity-10">
       <svg className="w-full h-full">
         <defs>
           <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -93,13 +93,13 @@ export const NeuralNetwork = () => {
                 x2={`${target.x}%`}
                 y2={`${target.y}%`}
                 stroke="url(#connectionGradient)"
-                strokeWidth={isActive ? "2" : "1"}
-                opacity={isActive ? 0.8 : 0.3}
+                strokeWidth={isActive ? "1.5" : "0.5"}
+                opacity={isActive ? 0.6 : 0.2}
                 animate={{
                   strokeDasharray: isActive ? ["0 100", "100 0"] : "0 100",
                 }}
                 transition={{
-                  duration: 1,
+                  duration: 2,
                   ease: "easeInOut"
                 }}
               />
@@ -113,16 +113,16 @@ export const NeuralNetwork = () => {
             key={node.id}
             cx={`${node.x}%`}
             cy={`${node.y}%`}
-            r="4"
+            r="3"
             fill="#ec4899"
             animate={{
-              r: [4, 6, 4],
-              opacity: [0.5, 1, 0.5],
+              r: [3, 4, 3],
+              opacity: [0.4, 0.8, 0.4],
             }}
             transition={{
-              duration: 2,
+              duration: 3,
               repeat: Infinity,
-              delay: node.id * 0.1,
+              delay: node.id * 0.2,
             }}
           />
         ))}

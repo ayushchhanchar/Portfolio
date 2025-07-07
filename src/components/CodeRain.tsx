@@ -23,32 +23,34 @@ export const CodeRain = () => {
     const createDrop = (id: number): RainDrop => ({
       id,
       x: Math.random() * 100,
-      characters: Array.from({ length: Math.floor(Math.random() * 20) + 10 }, 
+      characters: Array.from({ length: Math.floor(Math.random() * 10) + 5 }, 
         () => codeChars[Math.floor(Math.random() * codeChars.length)]
       ),
-      speed: Math.random() * 3 + 1,
-      opacity: Math.random() * 0.5 + 0.3
+      speed: Math.random() * 2 + 1,
+      opacity: Math.random() * 0.3 + 0.2
     })
 
-    const initialDrops = Array.from({ length: 30 }, (_, i) => createDrop(i))
+    // Reduced number of drops for better performance
+    const initialDrops = Array.from({ length: 15 }, (_, i) => createDrop(i))
     setDrops(initialDrops)
 
+    // Reduced update frequency
     const interval = setInterval(() => {
       setDrops(prevDrops => 
         prevDrops.map(drop => ({
           ...drop,
           characters: drop.characters.map(() => 
-            Math.random() > 0.98 ? codeChars[Math.floor(Math.random() * codeChars.length)] : drop.characters[0]
+            Math.random() > 0.95 ? codeChars[Math.floor(Math.random() * codeChars.length)] : drop.characters[0]
           )
         }))
       )
-    }, 100)
+    }, 200)
 
     return () => clearInterval(interval)
   }, [])
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-5">
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-3">
       {drops.map(drop => (
         <motion.div
           key={drop.id}
@@ -61,23 +63,22 @@ export const CodeRain = () => {
             y: ['-100vh', '100vh'],
           }}
           transition={{
-            duration: 10 / drop.speed,
+            duration: 15 / drop.speed,
             repeat: Infinity,
             ease: 'linear',
-            delay: Math.random() * 5,
+            delay: Math.random() * 10,
           }}
         >
           {drop.characters.map((char, i) => (
             <motion.div
               key={i}
               animate={{
-                opacity: [1, 0.3, 1],
-                color: ['#10b981', '#34d399', '#10b981'],
+                opacity: [1, 0.5, 1],
               }}
               transition={{
-                duration: 0.5,
+                duration: 1,
                 repeat: Infinity,
-                delay: i * 0.1,
+                delay: i * 0.2,
               }}
             >
               {char}

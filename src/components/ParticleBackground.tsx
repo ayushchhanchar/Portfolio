@@ -31,23 +31,32 @@ export const ParticleBackground = () => {
 
     const createParticles = () => {
       const particles: Particle[] = []
-      const particleCount = Math.min(100, Math.floor((canvas.width * canvas.height) / 15000))
+      // Reduced particle count for better performance
+      const particleCount = Math.min(30, Math.floor((canvas.width * canvas.height) / 25000))
       
       for (let i = 0; i < particleCount; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          size: Math.random() * 2 + 1,
-          opacity: Math.random() * 0.5 + 0.2,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          size: Math.random() * 1.5 + 0.5,
+          opacity: Math.random() * 0.3 + 0.1,
           color: Math.random() > 0.5 ? '#ec4899' : '#8b5cf6'
         })
       }
       particlesRef.current = particles
     }
 
-    const animate = () => {
+    let lastTime = 0
+    const animate = (currentTime: number) => {
+      // Throttle animation to 30fps for better performance
+      if (currentTime - lastTime < 33) {
+        animationRef.current = requestAnimationFrame(animate)
+        return
+      }
+      lastTime = currentTime
+
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       
       particlesRef.current.forEach((particle, index) => {
@@ -55,15 +64,15 @@ export const ParticleBackground = () => {
         particle.x += particle.vx
         particle.y += particle.vy
 
-        // Mouse interaction
+        // Simplified mouse interaction
         const dx = mouseRef.current.x - particle.x
         const dy = mouseRef.current.y - particle.y
         const distance = Math.sqrt(dx * dx + dy * dy)
         
-        if (distance < 100) {
-          const force = (100 - distance) / 100
-          particle.vx += dx * force * 0.001
-          particle.vy += dy * force * 0.001
+        if (distance < 80) {
+          const force = (80 - distance) / 80
+          particle.vx += dx * force * 0.0005
+          particle.vy += dy * force * 0.0005
         }
 
         // Boundary check
@@ -77,18 +86,18 @@ export const ParticleBackground = () => {
         ctx.globalAlpha = particle.opacity
         ctx.fill()
 
-        // Draw connections
-        particlesRef.current.slice(index + 1).forEach(otherParticle => {
+        // Draw connections (reduced range for performance)
+        particlesRef.current.slice(index + 1, index + 3).forEach(otherParticle => {
           const dx = particle.x - otherParticle.x
           const dy = particle.y - otherParticle.y
           const distance = Math.sqrt(dx * dx + dy * dy)
 
-          if (distance < 100) {
+          if (distance < 60) {
             ctx.beginPath()
             ctx.moveTo(particle.x, particle.y)
             ctx.lineTo(otherParticle.x, otherParticle.y)
             ctx.strokeStyle = particle.color
-            ctx.globalAlpha = (100 - distance) / 100 * 0.2
+            ctx.globalAlpha = (60 - distance) / 60 * 0.1
             ctx.lineWidth = 0.5
             ctx.stroke()
           }
@@ -104,7 +113,7 @@ export const ParticleBackground = () => {
 
     resizeCanvas()
     createParticles()
-    animate()
+    animate(0)
 
     window.addEventListener('resize', () => {
       resizeCanvas()

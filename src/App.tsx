@@ -33,12 +33,10 @@ function App() {
       {loading && <Preloader />}
       {!loading && (
         <div className="bg-gradient-to-br from-black via-gray-900 to-black min-h-screen text-white font-sans scroll-smooth dark relative overflow-x-hidden">
-          {/* Background Effects */}
+          {/* Optimized Background Effects - Only show 2-3 at a time */}
           <CodeRain />
           <ParticleBackground />
-          <InteractiveGrid />
           <NeuralNetwork />
-          <FloatingElements />
           
           {/* Interactive Elements */}
           <CursorFollower />
