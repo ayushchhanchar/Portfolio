@@ -5,6 +5,7 @@ import { FiExternalLink } from "react-icons/fi"
 import { useTilt3D } from "../utils/useTilt3D"
 import { fadeUp } from "../utils/motion"
 import { ProjectModal } from "../components/ProjectModal"
+import { TextReveal } from "../components/TextReveal"
 
 const projects = [
   {
@@ -62,7 +63,22 @@ export const Projects = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   return (
-    <section id="projects" className="py-20 px-4 max-w-7xl mx-auto">
+    <section id="projects" className="py-20 px-4 max-w-7xl mx-auto relative">
+      {/* Animated background elements */}
+      <motion.div
+        className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-pink-500/10 to-purple-600/10 rounded-full blur-xl"
+        animate={{
+          x: [0, 50, 0],
+          y: [0, -30, 0],
+          scale: [1, 1.2, 1],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+      
       <motion.div
         variants={fadeUp}
         initial="hidden"
@@ -70,12 +86,20 @@ export const Projects = () => {
         viewport={{ once: true }}
         className="text-center mb-16"
       >
-        <h2 className="text-5xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent mb-4">
-          Featured Projects
-        </h2>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-          A showcase of my recent work, featuring full-stack applications built with modern technologies
-        </p>
+        <motion.div
+          className="inline-block"
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
+          <h2 className="text-5xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent mb-4">
+            <TextReveal>Featured Projects</TextReveal>
+          </h2>
+        </motion.div>
+        <TextReveal
+          text="A showcase of my recent work, featuring full-stack applications built with modern technologies and innovative solutions"
+          className="text-gray-400 text-lg max-w-2xl mx-auto"
+          delay={0.5}
+        />
       </motion.div>
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -91,46 +115,85 @@ export const Projects = () => {
               whileInView="visible"
               viewport={{ once: true }}
               variants={{
-                hidden: { opacity: 0, y: 50 },
+                hidden: { opacity: 0, y: 50, rotateX: -15 },
                 visible: { 
                   opacity: 1, 
                   y: 0,
-                  transition: { delay: i * 0.2, duration: 0.6 }
+                  rotateX: 0,
+                  transition: { 
+                    delay: i * 0.2, 
+                    duration: 0.8,
+                    type: "spring",
+                    stiffness: 100
+                  }
                 }
               }}
               className="group relative bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl border border-gray-700/50 hover:border-pink-500/50 transition-all duration-500"
               onMouseEnter={() => setHoveredIndex(i)}
               onMouseLeave={() => setHoveredIndex(null)}
-              whileHover={{ y: -10 }}
+              whileHover={{ 
+                y: -15,
+                rotateY: 5,
+                transition: { duration: 0.3 }
+              }}
             >
-              {/* Project Image */}
+              {/* Animated border gradient */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 opacity-0 group-hover:opacity-20 transition-opacity duration-500"
+                animate={isHovered ? {
+                  background: [
+                    "linear-gradient(0deg, #ec4899, #8b5cf6, #06b6d4)",
+                    "linear-gradient(120deg, #ec4899, #8b5cf6, #06b6d4)",
+                    "linear-gradient(240deg, #ec4899, #8b5cf6, #06b6d4)",
+                    "linear-gradient(360deg, #ec4899, #8b5cf6, #06b6d4)",
+                  ]
+                } : {}}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+
+              {/* Project Image with enhanced effects */}
               <div className="relative overflow-hidden">
                 <motion.img
                   src={proj.image}
                   alt={proj.title}
                   className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110"
                 />
+                
+                {/* Scan line effect */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                  initial={{ x: "-100%" }}
+                  animate={isHovered ? { x: "100%" } : { x: "-100%" }}
+                  transition={{ duration: 0.8 }}
+                />
+                
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: isHovered ? 1 : 0 }}
                   transition={{ duration: 0.3 }}
                 />
                 
-                {/* Hover Overlay */}
+                {/* Enhanced Hover Overlay */}
                 <AnimatePresence>
                   {isHovered && (
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
                       className="absolute inset-0 flex items-center justify-center gap-4"
                     >
                       <motion.button
                         onClick={() => setSelectedProject(proj)}
-                        className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors"
-                        whileHover={{ scale: 1.05 }}
+                        className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-colors border border-white/30"
+                        whileHover={{ 
+                          scale: 1.05,
+                          boxShadow: "0 0 20px rgba(255,255,255,0.3)"
+                        }}
                         whileTap={{ scale: 0.95 }}
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.1 }}
                       >
                         View Details
                       </motion.button>
@@ -138,9 +201,16 @@ export const Projects = () => {
                         href={proj.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-white/20 backdrop-blur-sm text-white p-2 rounded-lg hover:bg-white/30 transition-colors"
-                        whileHover={{ scale: 1.05 }}
+                        className="bg-white/20 backdrop-blur-sm text-white p-2 rounded-lg hover:bg-white/30 transition-colors border border-white/30"
+                        whileHover={{ 
+                          scale: 1.05,
+                          rotate: 360,
+                          boxShadow: "0 0 20px rgba(255,255,255,0.3)"
+                        }}
                         whileTap={{ scale: 0.95 }}
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ delay: 0.2 }}
                       >
                         <FaGithub size={20} />
                       </motion.a>
@@ -149,11 +219,12 @@ export const Projects = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Project Content */}
-              <div className="p-6">
+              {/* Enhanced Project Content */}
+              <div className="p-6 relative">
                 <motion.h3 
                   className="text-xl font-bold text-white mb-3 group-hover:text-pink-400 transition-colors"
                   layoutId={`title-${i}`}
+                  whileHover={{ x: 5 }}
                 >
                   {proj.title}
                 </motion.h3>
@@ -165,62 +236,95 @@ export const Projects = () => {
                   {proj.description}
                 </motion.p>
 
-                {/* Tech Stack */}
+                {/* Enhanced Tech Stack */}
                 <div className="flex flex-wrap gap-2 mb-4">
                   {proj.tech.slice(0, 4).map((tech, techIndex) => (
                     <motion.span
                       key={techIndex}
-                      className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 border border-pink-500/30 text-pink-300 text-xs px-2 py-1 rounded-full"
-                      whileHover={{ scale: 1.05 }}
+                      className="bg-gradient-to-r from-pink-500/20 to-purple-600/20 border border-pink-500/30 text-pink-300 text-xs px-2 py-1 rounded-full backdrop-blur-sm"
+                      whileHover={{ 
+                        scale: 1.1,
+                        backgroundColor: "rgba(236, 72, 153, 0.3)",
+                        borderColor: "rgba(236, 72, 153, 0.6)"
+                      }}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: techIndex * 0.1 }}
                     >
                       {tech}
                     </motion.span>
                   ))}
                   {proj.tech.length > 4 && (
-                    <span className="text-gray-400 text-xs px-2 py-1">
+                    <motion.span 
+                      className="text-gray-400 text-xs px-2 py-1"
+                      whileHover={{ scale: 1.1 }}
+                    >
                       +{proj.tech.length - 4} more
-                    </span>
+                    </motion.span>
                   )}
                 </div>
 
-                {/* Action Buttons */}
+                {/* Enhanced Action Buttons */}
                 <div className="flex gap-3">
                   <motion.button
                     onClick={() => setSelectedProject(proj)}
-                    className="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
-                    whileHover={{ scale: 1.02 }}
+                    className="flex-1 bg-gradient-to-r from-pink-500 to-purple-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:opacity-90 transition-all relative overflow-hidden"
+                    whileHover={{ 
+                      scale: 1.02,
+                      boxShadow: "0 10px 25px rgba(236, 72, 153, 0.3)"
+                    }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    Learn More
+                    <motion.div
+                      className="absolute inset-0 bg-white/20"
+                      initial={{ x: "-100%" }}
+                      whileHover={{ x: "100%" }}
+                      transition={{ duration: 0.5 }}
+                    />
+                    <span className="relative z-10">Learn More</span>
                   </motion.button>
                   <motion.a
                     href={proj.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-lg transition-colors"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-lg transition-all relative overflow-hidden"
+                    whileHover={{ 
+                      scale: 1.1,
+                      rotate: 360,
+                      boxShadow: "0 5px 15px rgba(0,0,0,0.3)"
+                    }}
+                    whileTap={{ scale: 0.9 }}
                   >
                     <FaGithub size={16} />
                   </motion.a>
                 </div>
               </div>
 
-              {/* Animated Border */}
-              <motion.div
-                className="absolute inset-0 rounded-2xl"
-                style={{
-                  background: "linear-gradient(45deg, transparent, rgba(236, 72, 153, 0.1), transparent)",
-                }}
-                animate={{
-                  rotate: isHovered ? 360 : 0,
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: isHovered ? Infinity : 0,
-                  ease: "linear"
-                }}
-              />
+              {/* Floating particles effect */}
+              {isHovered && (
+                <div className="absolute inset-0 pointer-events-none">
+                  {Array.from({ length: 5 }).map((_, particleIndex) => (
+                    <motion.div
+                      key={particleIndex}
+                      className="absolute w-1 h-1 bg-pink-500 rounded-full"
+                      initial={{
+                        x: Math.random() * 100 + "%",
+                        y: "100%",
+                        opacity: 0,
+                      }}
+                      animate={{
+                        y: "-10%",
+                        opacity: [0, 1, 0],
+                      }}
+                      transition={{
+                        duration: 2,
+                        delay: particleIndex * 0.2,
+                        repeat: Infinity,
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
             </motion.div>
           )
         })}
