@@ -197,10 +197,11 @@ export const Hero = () => {
           className="mb-8"
         >
           <TextReveal
-            text="Frontend Developer passionate about creating exceptional digital experiences with cutting-edge technologies and beautiful animations."
             className="max-w-2xl text-lg md:text-xl text-gray-300 leading-relaxed"
             delay={2.5}
-          />
+          >
+            Frontend Developer passionate about creating exceptional digital experiences with cutting-edge technologies and beautiful animations.
+          </TextReveal>
         </motion.div>
 
         {/* Enhanced Resume Button with Ripple Effect */}

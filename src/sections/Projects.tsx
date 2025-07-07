@@ -96,10 +96,11 @@ export const Projects = () => {
           </h2>
         </motion.div>
         <TextReveal
-          text="A showcase of my recent work, featuring full-stack applications built with modern technologies and innovative solutions"
           className="text-gray-400 text-lg max-w-2xl mx-auto"
           delay={0.5}
-        />
+        >
+          A showcase of my recent work, featuring full-stack applications built with modern technologies and innovative solutions
+        </TextReveal>
       </motion.div>
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
